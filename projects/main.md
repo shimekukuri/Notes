@@ -1,6 +1,7 @@
-# Zig Syntax Reference
+# Projects
 
 ## Abstract
+Contains all currently working projects
 
 ## Directory
 
