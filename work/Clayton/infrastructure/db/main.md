@@ -13,3 +13,5 @@ orchestration.
 ## Useful Links
 
 ## Tags
+[[microsoft-sql-server]]
+[[sqlcmd]]
