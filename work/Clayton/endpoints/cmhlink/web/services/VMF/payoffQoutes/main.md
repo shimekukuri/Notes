@@ -11,4 +11,3 @@ where after payoffQoute is the loan number, followed by the date.
 [Exmaple Endpoint](https://dat.qua.cmhlink.net/web/services/VMF/payoffQuotes/1121214-0/20250529)
 
 ## Tags
-
