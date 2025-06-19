@@ -1,7 +1,7 @@
-# C Sharp
+# React
 
 ## Abstract
-Microsoft Java
+The front end web library
 
 ## Directory
 

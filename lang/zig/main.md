@@ -1,4 +1,4 @@
-# Zig Language Reference
+# Zig
 
 ## Abstract
 The zig Programming language

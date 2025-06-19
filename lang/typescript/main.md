@@ -1,10 +1,10 @@
-# C Sharp
+# Typescript
 
 ## Abstract
-Microsoft Java
 
 ## Directory
 
 ## Useful Links
 
 ## Tags
+[[javascript]]

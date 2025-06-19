@@ -1,7 +1,6 @@
-# C Sharp
+# Javascript
 
 ## Abstract
-Microsoft Java
 
 ## Directory
 

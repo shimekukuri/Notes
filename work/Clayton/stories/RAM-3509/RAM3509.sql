@@ -3,8 +3,9 @@ DECLARE
 	 @Id1 UNIQUEIDENTIFIER = NEWID(),
 	 @Id2 UNIQUEIDENTIFIER = NEWID(),
      @Id3 UNIQUEIDENTIFIER = NEWID(),
-
+     @Id4 UNIQUEIDENTIFIER = NEWID(),
      @TaskTypeId UNIQUEIDENTIFIER = (SELECT Id FROM tasktracker.TaskType WHERE Name = 'Utility'),
+     @TaskTypeId2 UNIQUEIDENTIFIER = Null,
      @TenantId UNIQUEIDENTIFIER = '4bc60b8b-d791-4393-bc86-e52bddd1e9e2',
 	 @CreatedDate DATETIME = GETDATE(),
      @ActiveDate DATETIME = GETDATE(),
@@ -22,6 +23,7 @@ BEGIN TRY
             @ActiveDate = @ActiveDate,
             @InactiveDate = @InactiveDate,
             @TenantId = @TenantId;
+    END
 
     IF NOT EXISTS (SELECT 1 FROM tasktracker.taskType WHERE Name = 'Pending Sale')
     BEGIN
@@ -34,21 +36,7 @@ BEGIN TRY
             @TenantId = @TenantId;
     END
 
-    IF NOT EXISTS (SELECT 1 FROM tasktracker.taskSubtype WHERE Name = 'Establish New Service')
-    BEGIN
-        EXEC tasktracker.usp_TaskSubType_Insert
-            @Id = @Id2,
-            @Name = 'Establish New Service',
-            @CreatedDate = @CreatedDate,
-            @ActiveDate = @ActiveDate,
-            @InactiveDate = @InactiveDate,
-            @TaskTypeId = @TaskTypeId,
-            @TenantId = @TenantId;
-    END
-
-    UPDATE tasktracker.taskSubtype SET
-
-    IF EXISTS (SELECT 1 FROM tasktracker.taskSubtype WHERE Name = 'Land')
+    IF NOT EXISTS (SELECT 1 FROM tasktracker.taskSubtype WHERE Name = 'Land')
     BEGIN
         EXEC tasktracker.usp_TaskSubType_Insert
             @Id = @Id2,
@@ -59,6 +47,37 @@ BEGIN TRY
             @TaskTypeId = @TaskTypeId,
             @TenantId = @TenantId;
     END
+
+    IF NOT EXISTS (SELECT 1 FROM tasktracker.taskType WHERE Name = 'Land')
+    BEGIN
+        EXEC tasktracker.usp_TaskType_Insert
+            @Id = @Id3,
+            @Name = 'Land',
+            @CreatedDate = @CreatedDate,
+            @ActiveDate = @ActiveDate,
+            @InactiveDate = @InactiveDate,
+            @TenantId = @TenantId;
+    END
+
+    SELECT @TaskTypeId2 = Id FROM tasktracker.taskType WHERE Name = 'Land';
+
+    IF NOT EXISTS (SELECT 1 FROM tasktracker.taskSubtype WHERE Name = 'Recovery')
+    AND @TaskTypeId2 IS NOT NULL
+    BEGIN
+        EXEC tasktracker.usp_TaskSubType_Insert
+            @Id = @Id4,
+            @Name = 'Recovery',
+            @CreatedDate = @CreatedDate,
+            @ActiveDate = @ActiveDate,
+            @InactiveDate = @InactiveDate,
+            @TaskTypeId = @TaskTypeId2,
+            @TenantId = @TenantId;
+    END
+
+
+    UPDATE tasktracker.taskSubtype t0
+    SET t0.Name = 'Establish New Service'
+    WHERE t0.Name = 'Land';
 
     COMMIT TRANSACTION
 END TRY
@@ -77,4 +96,3 @@ BEGIN CATCH
 
     RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState)
 END CATCH
-
