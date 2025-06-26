@@ -29,6 +29,18 @@ infra
 go make your iseries client
 
 )
+    ----------
+07/23/25
+
+go back and untrack the loan DTO object from git.
+go back and untrack the domain obejct as well (untrack and delete
+
+Make the dtos for the domain and also for the package (these should olok similar
+(change the controller so that it has proper naming conventions and also properly referencing the dtos)
+(need to change something in the api.client later on so that it all matches)
+
+come back and finish modeling the PayoffInformation resposne
+Come back and finish the appsettings json ✅
 
 ## Directory
 
