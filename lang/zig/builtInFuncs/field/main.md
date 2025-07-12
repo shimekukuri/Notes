@@ -52,3 +52,4 @@ All 2 tests passed.
 ## Useful Links
 
 ## Tags
+[[zig-built-in-functions]]
