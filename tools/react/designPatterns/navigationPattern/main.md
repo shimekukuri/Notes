@@ -33,7 +33,7 @@ import { baseStyles } from "@/useStyle";
 export type TabNavigationProps<T, K extends keyof T> = T[K];
 
 export interface TabRouterInterface<T, K extends keyof T = keyof T> {
-    tabName: K;
+    tabName: K | "";
     setTabName?: Dispatch<SetStateAction<keyof T>>;
     props?: T[K];
 }
@@ -43,18 +43,20 @@ export interface TabNavigatorProps<T> {
     style?: StyleProp<ViewStyle>;
     disableBaseStyles?: boolean;
     initialRoute: Omit<TabRouterInterface<T>, "setTabName">;
+    screen: keyof T | "" | undefined;
+    setScreen: Dispatch<SetStateAction<keyof T | "">>;
 }
 
-export function useCreateTabNavigator<T>() {
-    const [screen, setScreen] = useState<keyof T | undefined>();
-    const [rendered, setRendered] = useState<boolean>(false);
-
+export function createTabNavigator<T>() {
     function TabNavigator({
         children,
         style: x,
         disableBaseStyles = false,
         initialRoute,
+        screen,
+        setScreen,
     }: TabNavigatorProps<T>) {
+        const [rendered, setRendered] = useState<boolean>(false);
         const names: Array<keyof T> = [];
 
         React.Children.forEach(children, (child) => {
@@ -116,7 +118,7 @@ export function useCreateTabNavigator<T>() {
         initialRoute,
     }: {
         children: ReactNode;
-        screen: keyof T;
+        screen: keyof T | "";
         setScreen: Dispatch<SetStateAction<keyof T>>;
         initialRoute: TabRouterInterface<T>;
     }) {
@@ -142,18 +144,19 @@ export function useCreateTabNavigator<T>() {
     const TabPageProvider = ({
         children,
         initialRoute,
-        screen: x,
-        setScreen: y,
+        screen,
+        setScreen,
     }: {
         children: ReactNode;
         initialRoute: TabRouterInterface<T>;
-        screen: keyof T;
-        setScreen: Dispatch<SetStateAction<keyof T>>;
+        screen: keyof T | "";
+        setScreen: Dispatch<SetStateAction<keyof T | "">>;
     }) => {
         return (
             <TabRouterContext.Provider
                 value={{
-                    tabName: x !== undefined ? screen : initialRoute.tabName,
+                    tabName:
+                        screen !== undefined ? screen : initialRoute.tabName,
                     setTabName: setScreen,
                     props: undefined,
                 }}
@@ -245,7 +248,6 @@ export function useCreateTabNavigator<T>() {
     return {
         Page: Page,
         Navigator: TabNavigator,
-        navigate: setScreen,
     };
 }
 
@@ -277,6 +279,7 @@ import React, { useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
+import { createTabNavigator } from "@/components/Tabs/TabNavigator/TabNavigator";
 import { RootStackParamList } from "@/App";
 import { claytonBlue } from "@/components/colors";
 import { ErrorModal } from "@/components/Modals/ErrorModal";
@@ -288,7 +291,6 @@ import { NotesTab } from "../Notes/NotesTab/NotesTab";
 import { TasksTab } from "../Tasks/TasksTab";
 import { useAsset } from "./api/useAsset";
 import { MediaTab } from "../Media/MediaTab/MediaTab";
-import { useCreateTabNavigator } from "@/components/Tabs/TabNavigator/TabNavigator";
 
 type AssetProps = NativeStackScreenProps<RootStackParamList, "Asset">;
 
@@ -300,6 +302,8 @@ export type AssetTabProps = {
     Tasks: { id: string };
 };
 
+const Tab = createTabNavigator<AssetTabProps>();
+
 export const Asset = ({ navigation, route }: AssetProps) => {
     const id = route.params.id;
     const {
@@ -310,7 +314,7 @@ export const Asset = ({ navigation, route }: AssetProps) => {
         refetch,
     } = useAsset(id);
 
-    const Tab = useCreateTabNavigator<AssetTabProps>();
+    const [screen, setScreen] = useState<keyof AssetTabProps | "">("");
 
     const [errorModalShown, setErrorModalShown] = useState<boolean>(false);
 
@@ -324,6 +328,7 @@ export const Asset = ({ navigation, route }: AssetProps) => {
         return (
             <ErrorModal
                 onRefreshError={() => {
+                    setScreen("");
                     setErrorModalShown(false);
                     navigation.navigate("auth");
                 }}
@@ -361,9 +366,11 @@ export const Asset = ({ navigation, route }: AssetProps) => {
                 asset={asset}
                 id={id}
                 navigation={navigation}
-                setSelectedTab={() => {}}
+                setSelectedTab={() => setScreen("Details")}
             />
             <Tab.Navigator
+                screen={screen}
+                setScreen={setScreen}
                 initialRoute={{
                     tabName: "Media",
                     props: { id },
