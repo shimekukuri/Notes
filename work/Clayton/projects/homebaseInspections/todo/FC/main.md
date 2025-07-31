@@ -11,6 +11,8 @@
 - Check animated tabs and make sure we set up some kind of key prop
 - Need to remove all instance of the old implimentation of the error modal
 - Need to come up with a better interface for the ErrorModal something like I have for the other tabs and such
+- Need to do a preemtive check to see if auth token is expired if so go ahead and initiate the authentication request
+- Can we somehow unify certain things between Assetlist, FClist, and Tasklist components (maybe better not)
 
 ### Fix Bugs
 - Whatever this Text strings must be rendered within text when trying to authentication
