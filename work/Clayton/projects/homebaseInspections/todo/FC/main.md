@@ -3,21 +3,34 @@
 ## Abstract
 
 ### Main Todo
-- Clean up useInspectionList
-- Need to finish up the authentication stuff at the request layer.
-- Need to handle the event where they need to log back in.
-- Remove custom error handling from the application sense we are now using data dog
-- Need Error Handling around all of the request layer calls that could throw
-- Check animated tabs and make sure we set up some kind of key prop
-- Need to remove all instance of the old implimentation of the error modal
-- Need to come up with a better interface for the ErrorModal something like I have for the other tabs and such
-- Need to do a preemtive check to see if auth token is expired if so go ahead and initiate the authentication request
-- Can we somehow unify certain things between Assetlist, FClist, and Tasklist components (maybe better not)
+✅ Need Error Handling around all of the request layer calls that could throw
+✅ Check animated tabs and make sure we set up some kind of key prop
+✅ Need to remove all instance of the old implimentation of the error modal
+✅ Need to come up with a better interface for the ErrorModal something like I have for the other tabs and such
+✅ Remove custom error handling from the application sense we are now using data dog
+✅ Can we somehow unify certain things between Assetlist, FClist, and Tasklist components (maybe better not)
+* Clean up useInspectionList
+* Need to finish up the authentication stuff at the request layer.
+* Need to handle the event where they need to log back in.
+* Need to do a preemtive check to see if auth token is expired if so go ahead and initiate the authentication request
+
+* Come back to do Camera it needs to be it's own story and I either need a test device or something
+    * In the Homeinspection HEader the camera button, really we just needt redo the header for the old app as well
 
 ### Fix Bugs
-- Whatever this Text strings must be rendered within text when trying to authentication
-- Ensure that the initial login screen works as intended after the change
+✅ Whatever this Text strings must be rendered within text when trying to authentication
+* Ensure that the initial login screen works as intended after the change
 
+### Clean up
+❌ Remove all Remove Laters
+❌ Remove all console logs
+❌ Remove all unsued code via the npm cleaner thing
+❌ Retest everything
+
+### Feedback
+* TouchPoint
+    * Customer
+    *
 
 ## Directory
 
