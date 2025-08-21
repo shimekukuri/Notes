@@ -13,9 +13,10 @@
 * Need to finish up the authentication stuff at the request layer.
 * Need to handle the event where they need to log back in.
 * Need to do a preemtive check to see if auth token is expired if so go ahead and initiate the authentication request
+* Make it so Network Text is green or red depending on the network request status
 
 * Come back to do Camera it needs to be it's own story and I either need a test device or something
-    * In the Homeinspection HEader the camera button, really we just needt redo the header for the old app as well
+* In the Homeinspection HEader the camera button, really we just needt redo the header for the old app as well
 
 ### Fix Bugs
 ✅ Whatever this Text strings must be rendered within text when trying to authentication
