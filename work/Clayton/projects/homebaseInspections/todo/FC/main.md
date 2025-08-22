@@ -9,14 +9,18 @@
 ✅ Need to come up with a better interface for the ErrorModal something like I have for the other tabs and such
 ✅ Remove custom error handling from the application sense we are now using data dog
 ✅ Can we somehow unify certain things between Assetlist, FClist, and Tasklist components (maybe better not)
+✅ Make it so Network Text is green or red depending on the network request status
 * Clean up useInspectionList
 * Need to finish up the authentication stuff at the request layer.
 * Need to handle the event where they need to log back in.
 * Need to do a preemtive check to see if auth token is expired if so go ahead and initiate the authentication request
-* Make it so Network Text is green or red depending on the network request status
+* Not the highest Priority but probably should come back and redo the Media Cards because they are a fucking mess
 
 * Come back to do Camera it needs to be it's own story and I either need a test device or something
 * In the Homeinspection HEader the camera button, really we just needt redo the header for the old app as well
+
+### Type Fixes
+* Make the setSorted By work right where it doesn't show offline in media tab
 
 ### Fix Bugs
 ✅ Whatever this Text strings must be rendered within text when trying to authentication
