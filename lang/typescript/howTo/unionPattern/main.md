@@ -2,27 +2,27 @@
 
 ## Abstract
 ```typescript
-// Utility to extract shared keys between two types
-type SharedKeys<A, B> = keyof A & keyof B;
+export type ImageFileUnion =
+    | ({ kind?: "ReadDirResItemT" } & ReadDirResItemT)
+    | ({ kind?: "Media" } & Media);
 
-// Core utility type that merges two types with a discriminator
-export type MergeWithDiscriminator<
-  A,
-  B,
-  K extends keyof A & keyof B,
-  DiscriminatorA extends string,
-  DiscriminatorB extends string
-> =
-  | ({ [P in K]: A[P] } & { kind: DiscriminatorA } & Omit<A, K>)
-  | ({ [P in K]: B[P] } & { kind: DiscriminatorB } & Omit<B, K>);
+function video(x: ImageFileUnion, statuses: LookupResponse): boolean {
+    switch (x?.kind) {
+        case "ReadDirResItemT": {
+            return x.name.split(".")[1] === "mov";
+        }
+        case "Media": {
+            return (
+                x.mediaTypeId ===
+                statuses?.find((item) => item.description === "video")?.id
+            );
+        }
+        default: {
+            return false;
+        }
+    }
+}
 
-// Convenience wrapper that infers shared keys automatically
-export type MergeWithAutoShared<
-  A,
-  B,
-  DiscriminatorA extends string,
-  DiscriminatorB extends string
-> = MergeWithDiscriminator<A, B, SharedKeys<A, B>, DiscriminatorA, DiscriminatorB>;
 
 ```
 
