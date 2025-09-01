@@ -21,6 +21,22 @@ pub fn main() !void {
 }
 ```
 
+also just as valid is this:
+```zig
+const std = @import("std");
+
+pub fn main() !void {
+    const letsTry: struct { hello: []const u8 } = .{ .hello = "world" };
+    var buffer: [1028]u8 = undefined;
+
+    var std_writer = std.fs.File.stdout().writer(&buffer);
+    const std_out = &std_writer.interface;
+
+    try std.json.Stringify.value(letsTry, .{ .whitespace = .indent_2 }, std_out);
+    try std_out.flush();
+}
+```
+
 ## Directory
 
 ## Useful Links
