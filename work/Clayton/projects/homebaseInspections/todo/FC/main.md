@@ -15,6 +15,7 @@
 * Need to handle the event where they need to log back in.
 * Need to do a preemtive check to see if auth token is expired if so go ahead and initiate the authentication request
 * Not the highest Priority but probably should come back and redo the Media Cards because they are a fucking mess
+* The useMedia hook hastily fetches in the background, maybe it shouldn't do that. Seems like a bit of a side
 
 * Come back to do Camera it needs to be it's own story and I either need a test device or something
 * In the Homeinspection HEader the camera button, really we just needt redo the header for the old app as well
