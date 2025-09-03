@@ -38,6 +38,19 @@
     * Customer
     *
 
+### Meeting todo:
+Land Owners Name and Phone isn't in the Model and it needs to be.
+
+Relation to customer and Name of person at address.
+
+Each inspection attempt needs to record all events that happened during that event including:
+Letter
+Direct Contact
+Collateral Located
+Put on phone
+Inspection Only
+Vacant
+
 ## Directory
 
 ## Useful Links
