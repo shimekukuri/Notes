@@ -39,7 +39,7 @@
     *
 
 ### Meeting todo:
-Land Owners Name and Phone isn't in the Model and it needs to be.
+Land Owners Name and Phone isn't in the Model and it needs to be
 
 Relation to customer and Name of person at address.
 
