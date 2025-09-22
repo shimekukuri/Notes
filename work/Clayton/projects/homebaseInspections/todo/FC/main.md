@@ -10,15 +10,31 @@
 ✅ Remove custom error handling from the application sense we are now using data dog
 ✅ Can we somehow unify certain things between Assetlist, FClist, and Tasklist components (maybe better not)
 ✅ Make it so Network Text is green or red depending on the network request status
+✅ Not the highest Priority but probably should come back and redo the Media Cards because they are a fucking mess
+✅ Fixed Controled input where it was assumed to have flex 1 on condition report
 * Clean up useInspectionList
-* Need to finish up the authentication stuff at the request layer.
-* Need to handle the event where they need to log back in.
-* Need to do a preemtive check to see if auth token is expired if so go ahead and initiate the authentication request
-* Not the highest Priority but probably should come back and redo the Media Cards because they are a fucking mess
 * The useMedia hook hastily fetches in the background, maybe it shouldn't do that. Seems like a bit of a side
-
+* Fix the Header For Asset
 * Come back to do Camera it needs to be it's own story and I either need a test device or something
 * In the Homeinspection HEader the camera button, really we just needt redo the header for the old app as well
+* Something in the media tab is making a network call when it shouldn't be. It's implicit to even offline functionality
+* Remove the handleSubmit from the submit buttons, already using the hook should probably just grab it out of there,
+  that or form should have to be passed in as a whole or the primatives that are required from form from the submit
+  buttons.
+* Remove array methods for handlers.
+    * handleRemoveModalConfirm in features/homseinspections/components/attemptstab.tsx
+    * onSubmit in newInspectionsModal looks awful
+* Once the backend is done verify the role are working properly
+* Fix Create Patch again (ugh)
+
+### Authentication to do
+✅ Need to finish up the authentication stuff at the request layer.
+✅ Need to handle the event where they need to log back in.
+* Condition Report tab still using legacy refresh button
+* Need to do a preemtive check to see if auth token is expired if so go ahead and initiate the authentication request
+*
+
+### Inspections Tab remove validate from everything that isn't an auto generated inspection
 
 ### Type Fixes
 * Make the setSorted By work right where it doesn't show offline in media tab
@@ -33,23 +49,7 @@
 ❌ Remove all unsued code via the npm cleaner thing
 ❌ Retest everything
 
-### Feedback
-* TouchPoint
-    * Customer
-    *
-
 ### Meeting todo:
-Land Owners Name and Phone isn't in the Model and it needs to be
-
-Relation to customer and Name of person at address.
-
-Each inspection attempt needs to record all events that happened during that event including:
-Letter
-Direct Contact
-Collateral Located
-Put on phone
-Inspection Only
-Vacant
 
 ## Directory
 
