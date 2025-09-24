@@ -61,6 +61,103 @@ What I have done:
     }
     ```
 
+### architecture improvement for the sanitize function:
+```typescript
+import { ref } from 'vue'
+import { loadFramework, saveFramework, resetFramework } from '@/utils/frameworkLoader'
+import type { Framework } from '@/utils/frameworkLoader'
+import { sanitize } from '@/utils/htmlSanitizer'
+
+const initialFrameworkState = loadFramework()
+const framework = ref(initialFrameworkState)
+const lastUpdateTimestamp = ref(new Date())
+
+export function useFramework() {
+    function updateFramework(updatedData: Framework) {
+        switchedSanitize({ updatedData })
+        saveFramework(framework.value)
+        lastUpdateTimestamp.value = new Date()
+    }
+
+    function switchedSanitize({ updatedData: x }: { updatedData: Framework }) {
+        for (let k in framework.value) {
+            type X = keyof typeof framework.value
+            switch (k as X) {
+                default: {
+                    const key = k as Exclude<X, 'items'>;
+                    const temp = x[key];
+                    if (typeof temp === "string") {
+                        framework.value[key] = sanitize(temp);
+                    }
+                    break;
+                }
+                case 'items': {
+                    if (!Array.isArray(x['items'])) continue;
+                    itemsCase({ updatedData: x });
+                    break;
+                }
+
+            }
+        }
+    }
+
+    function itemsCase({ updatedData: x }: { updatedData: Framework }) {
+        for (let i = 0; i < x['items'].length; i++) {
+            for (let k2 in x['items'][i]) {
+                type X = keyof typeof x['items'][number];
+                switch (k2 as keyof typeof x['items'][number]) {
+                    default: {
+                        const temp = x.items[i][k2 as X];
+                        if (typeof temp === "string") {
+                            framework.value.items[i][k2 as X] = sanitize(temp);
+                        }
+                        break;
+                    }
+                    case 'extensions': {
+                        itemsExtensionCase({ updatedData: x, index: i });
+                    }
+                }
+
+            }
+        }
+    }
+
+    function itemsExtensionCase({ updatedData: x, index }: { updatedData: Framework, index: number }) {
+        for (let k3 in x['items'][index].extensions) {
+            type X = keyof typeof x['items'][number]['extensions'];
+            switch (k3 as X) {
+                default: {
+                    framework.value['items'][index]['extensions'][k3 as X] =
+                        sanitize(x['items'][index]['extensions'][k3 as X]!)
+                    break;
+                }
+                case 'note': {
+                    framework.value['items'][index]['extensions'][k3 as X] = x['items'][index]['extensions'][k3 as X]!
+                    break;
+                }
+
+            }
+        }
+
+    }
+
+    function reset() {
+        framework.value = resetFramework()
+        saveFramework(framework.value)
+        lastUpdateTimestamp.value = new Date()
+    }
+
+    return {
+        data: framework,
+        lastUpdateTimestamp,
+        updateFramework,
+        reset,
+    }
+}
+
+
+```
+
 ## Directory
 
 ## Useful Links
