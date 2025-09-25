@@ -37,35 +37,54 @@ What I have done:
   extensions cannot be added
     * updateDataInputCard>addExtension rewrite this to just simply rebuild the extension numbers
     ```typescript
-    function removeExtension(key: string) {
-    if (editableItem.value && key !== 'note') {
-        const { [key]: removed, ...rest } = editableItem.value.extensions;
-        let result: { [key: string]: string } = {};
-        const resKeys = Object.keys(rest);
-        const hold: Array<string> = [];
-        let baseNumber = 0;
-        for (let i = 0; i < resKeys.length; i++) {
-            const innerKey = resKeys[i];
-            if (innerKey.slice(0, 10) === 'extension_') {
-                hold.push(innerKey);
+    function addExtension() {
+    if (editableItem.value) {
+        let extentionCount = 1;
+        const extensionsArr: Array<string> = [];
+        const result: { [key: string]: string } = {};
+        for (let k in editableItem.value.extensions) {
+            if (k.slice(0, 10) === `extension_`) {
+                extensionsArr.push(editableItem.value.extensions[k]);
                 continue;
             }
-            result[innerKey] = rest[innerKey];
-            baseNumber++;
+            result[k] = editableItem.value.extensions[k];
+            extentionCount++;
         }
-        baseNumber++
-        for (let i = 0; i < hold.length; i++) {
-            result[`extension_${baseNumber + i}`] = rest[hold[i]];
+        for (let i = 0; i < extensionsArr.length + 1; i++) {
+            result[`extension_${i + extentionCount}`] = extensionsArr[i];
         }
         editableItem.value.extensions = result;
     }
+    }
+
+    function removeExtension(key: string) {
+        if (editableItem.value && key !== 'note') {
+            const { [key]: removed, ...rest } = editableItem.value.extensions;
+            const temp: Array<string> = [];
+            const result: { [key: string]: string } = {};
+            let count = 0;
+            for (let k in rest) {
+                if (k.slice(0, 10) === `extension_`) {
+                    temp.push(rest[k])
+                    continue;
+                }
+                result[k] = rest[k];
+                count++;
+            }
+            for (let i = 0; i < temp.length; i++) {
+                result[`extension_${i + count + 1}`] = temp[i] ?? "";
+            }
+            editableItem.value.extensions = result;
+        }
+    }
+
     ```
 
 ### architecture improvement for the sanitize function:
 ```typescript
 import { ref } from 'vue'
 import { loadFramework, saveFramework, resetFramework } from '@/utils/frameworkLoader'
-import type { Framework } from '@/utils/frameworkLoader'
+import type { ExtensionsDefinedKeys, Framework } from '@/utils/frameworkLoader'
 import { sanitize } from '@/utils/htmlSanitizer'
 
 const initialFrameworkState = loadFramework()
@@ -74,71 +93,64 @@ const lastUpdateTimestamp = ref(new Date())
 
 export function useFramework() {
     function updateFramework(updatedData: Framework) {
-        switchedSanitize({ updatedData })
-        saveFramework(framework.value)
-        lastUpdateTimestamp.value = new Date()
-    }
-
-    function switchedSanitize({ updatedData: x }: { updatedData: Framework }) {
-        for (let k in framework.value) {
-            type X = keyof typeof framework.value
-            switch (k as X) {
+        type Key = keyof typeof updatedData;
+        for (let k in updatedData) {
+            switch (k as Key) {
                 default: {
-                    const key = k as Exclude<X, 'items'>;
-                    const temp = x[key];
-                    if (typeof temp === "string") {
-                        framework.value[key] = sanitize(temp);
+                    if (typeof updatedData[k as Key] === "string") {
+                        type Narrowed = Exclude<Key, 'items'>;
+                        framework.value[k as Narrowed] = sanitize(updatedData[k as Narrowed]);
                     }
                     break;
                 }
                 case 'items': {
-                    if (!Array.isArray(x['items'])) continue;
-                    itemsCase({ updatedData: x });
-                    break;
+                    handleItemsSanitizationV2(updatedData.items);
                 }
-
             }
         }
+        saveFramework(framework.value)
     }
 
-    function itemsCase({ updatedData: x }: { updatedData: Framework }) {
-        for (let i = 0; i < x['items'].length; i++) {
-            for (let k2 in x['items'][i]) {
-                type X = keyof typeof x['items'][number];
-                switch (k2 as keyof typeof x['items'][number]) {
+    function handleItemsSanitizationV2(items: Framework['items']) {
+        for (let i = 0; i < items.length; i++) {
+            type Key = keyof typeof items[number];
+            for (let k in items[i]) {
+                type Narrowed = Exclude<Key, 'extensions'>
+                switch (k as Key) {
                     default: {
-                        const temp = x.items[i][k2 as X];
-                        if (typeof temp === "string") {
-                            framework.value.items[i][k2 as X] = sanitize(temp);
+                        if (typeof items[i][k as Key] === "string") {
+                            framework.value['items'][i][k as Narrowed] = sanitize(items[i][k as Narrowed]);
                         }
                         break;
                     }
                     case 'extensions': {
-                        itemsExtensionCase({ updatedData: x, index: i });
+                        framework.value.items[i].extensions = handleExtentionsSanitizationV2(items[i]['extensions'])
+                        break;
                     }
                 }
-
             }
+
         }
     }
 
-    function itemsExtensionCase({ updatedData: x, index }: { updatedData: Framework, index: number }) {
-        for (let k3 in x['items'][index].extensions) {
-            type X = keyof typeof x['items'][number]['extensions'];
-            switch (k3 as X) {
+    function handleExtentionsSanitizationV2(extensions: Framework['items'][number]['extensions']) {
+        type Key = keyof typeof extensions;
+        const result: { [k in ExtensionsDefinedKeys]?: string } = {};
+        for (let k in extensions) {
+            switch (k as Key) {
                 default: {
-                    framework.value['items'][index]['extensions'][k3 as X] =
-                        sanitize(x['items'][index]['extensions'][k3 as X]!)
+                    if (typeof extensions[k as Key] === 'string') {
+                        result[k as Key] = sanitize(extensions[k as Key]!);
+                    }
                     break;
                 }
                 case 'note': {
-                    framework.value['items'][index]['extensions'][k3 as X] = x['items'][index]['extensions'][k3 as X]!
+                    result['note'] = extensions.note;
                     break;
                 }
-
             }
         }
-
+        return result;
     }
 
     function reset() {
@@ -154,7 +166,57 @@ export function useFramework() {
         reset,
     }
 }
+//types
+import jsonData from '../data/arizona-framework.json'
 
+export interface Framework {
+    id: string;
+    name: string;
+    description: string;
+    version: string;
+    gradeLevel: string;
+    status: string;
+    creator: string;
+    items: Item[];
+}
+
+export type ExtensionsDefinedKeys = "note" | "source" | "updated";
+
+export interface Item {
+    id: string;
+    name: string;
+    description: string;
+    type: string;
+    extensions: { [k in ExtensionsDefinedKeys]?: string }
+}
+
+const STORAGE_KEY = 'cglt-interview-framework-data'
+
+export function loadFramework(): Framework {
+    const savedData = localStorage.getItem(STORAGE_KEY)
+    if (savedData) {
+        try {
+            return JSON.parse(savedData) as Framework
+        } catch (error) {
+            console.error('Error parsing saved data:', error)
+        }
+    }
+
+    return jsonData as Framework
+}
+
+export function saveFramework(framework: Framework): void {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(framework, null, 2))
+    } catch (error) {
+        console.error('Error saving framework:', error)
+    }
+}
+
+export function resetFramework(): Framework {
+    localStorage.removeItem(STORAGE_KEY)
+    return jsonData as Framework
+}
 
 ```
 
