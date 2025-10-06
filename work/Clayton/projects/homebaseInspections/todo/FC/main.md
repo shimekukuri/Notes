@@ -27,6 +27,7 @@
     * handleRemoveModalConfirm in features/homseinspections/components/attemptstab.tsx
     * onSubmit in newInspectionsModal looks awful
 * Fix Create Patch again (ugh)
+* Remove all of the succesfully uploaded inspections, probably need either a second button.
 
 ### Authentication to do
 ✅ Need to finish up the authentication stuff at the request layer.
