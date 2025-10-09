@@ -27,18 +27,19 @@
     * handleRemoveModalConfirm in features/homseinspections/components/attemptstab.tsx
     * onSubmit in newInspectionsModal looks awful
 * Fix Create Patch again (ugh)
-* Remove all of the succesfully uploaded inspections, probably need either a second button.
 * When a request is removed we need to update what all is removed IE we also need to get rid of meta data
 
 ### Upload Stuff
-* When upload fails inspection needs to be red.
+✅ When upload fails inspection needs to be red.
+✅ When upload succeeds inspetion needs to be in green
+✅ Need to add multistaging uploads IE Group 1 should finish before group 2(Reviewed not needed at this time)
+✅ Make it so progress bars update after upload
+* Remove all of the succesfully uploaded inspections, probably need either a second button.
 * When attempting an upload on any inspection it needs to lock them.
-* When upload succeeds inspetion needs to be in green
-* Need to add multistaging uploads IE Group 1 should finish before group 2
 * When Inspections has nothing to upload everything locks up at thend.
 * Need to handle error handling for even on the successful paths
-* Make it so progress bars update after upload
 
+### Upload Individual stuff
 
 ### Authentication to do
 ✅ Need to finish up the authentication stuff at the request layer.
@@ -55,7 +56,8 @@
 
 ### Fix Bugs
 ✅ Whatever this Text strings must be rendered within text when trying to authentication
-* Ensure that the initial login screen works as intended after the change
+✅ Ensure that the initial login screen works as intended after the change
+* It seems that the media tab is still making a network calle
 
 ### Clean up
 ❌ Remove all Remove Laters
