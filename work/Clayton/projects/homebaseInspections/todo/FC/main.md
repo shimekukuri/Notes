@@ -38,6 +38,8 @@
 * When attempting an upload on any inspection it needs to lock them.
 * When Inspections has nothing to upload everything locks up at thend.
 * Need to handle error handling for even on the successful paths
+* When it is not validated it needs to fail
+* Maybe repurpose the status's section of the card to indicate If there where particular failures
 
 ### Upload Individual stuff
 
