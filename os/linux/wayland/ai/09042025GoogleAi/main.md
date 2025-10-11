@@ -1,4 +1,4 @@
-# Linux Wayland - Zig Vulkan and Wayland
+# Linux Wayland AI - Zig Vulkan and Wayland
 
 ## Abstract
 ok I'm doing something that could use vulkan what does that path look like am I writing more to vulcan or am I writing to wayland, give me a pipeline of where data is flowing from my zig application
@@ -66,3 +66,4 @@ enrtry point for Zig Pallindrome notes
 ## Useful Links
 
 ## Tags
+
