@@ -6,7 +6,7 @@ export type ImageFileUnion =
     | ({ kind?: "ReadDirResItemT" } & ReadDirResItemT)
     | ({ kind?: "Media" } & Media);
 
-function video(x: ImageFileUnion, statuses: LookupResponse): boolean {
+f.unction video(x: ImageFileUnion, statuses: LookupResponse): boolean {
     switch (x?.kind) {
         case "ReadDirResItemT": {
             return x.name.split(".")[1] === "mov";
