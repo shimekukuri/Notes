@@ -40,6 +40,8 @@
 * Need to handle error handling for even on the successful paths
 * When it is not validated it needs to fail
 * Maybe repurpose the status's section of the card to indicate If there where particular failures
+* I think that all of the on mount logic in each individual card could be moved up to a common anscestor and we
+  itterate through them in one place instead of in each individual card (Need to think about this)
 
 ### Upload Individual stuff
 
@@ -67,7 +69,8 @@
 ❌ Remove all unsued code via the npm cleaner thing
 ❌ Retest everything
 
-### Meeting todo:
+### BACKEND HOOKED UP LETS GO
+*
 
 ## Directory
 
