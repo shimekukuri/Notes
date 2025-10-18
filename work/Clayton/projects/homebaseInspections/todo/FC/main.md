@@ -17,7 +17,8 @@
 ✅ Once the backend is done verify the role are working properly
 ✅ Something in the media tab is making a network call when it shouldn't be. It's implicit to even offline functionality
 ✅ The useMedia hook hastily fetches in the background, maybe it shouldn't do that. Seems like a bit of a side
-* Clean up useInspectionList
+✅ Clean up useInspectionList (not using this needs to be deleted tho)
+* Delete useInspectionLIst
 * Come back to do Camera it needs to be it's own story and I either need a test device or something
 * In the Homeinspection Haader the camera button, really we just needt redo the header for the old app as well
 * Remove the handleSubmit from the submit buttons, already using the hook should probably just grab it out of there,
@@ -28,6 +29,7 @@
     * onSubmit in newInspectionsModal looks awful
 * Fix Create Patch again (ugh)
 * When a request is removed we need to update what all is removed IE we also need to get rid of meta data
+* Might need to move sorting for HIfieldUse and LIst into it's own area they are kind of co-dependent
 
 ### Upload Stuff
 ✅ When upload fails inspection needs to be red.
@@ -62,6 +64,7 @@
 ✅ Whatever this Text strings must be rendered within text when trying to authentication
 ✅ Ensure that the initial login screen works as intended after the change
 * It seems that the media tab is still making a network calle
+* Trying to modify Hud Numbers in an inspection straight breaks everything
 
 ### Clean up
 ❌ Remove all Remove Laters
