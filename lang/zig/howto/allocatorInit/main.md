@@ -1,8 +1,13 @@
 # Zig How To - Allocator Init
 
 ## Abstract
+
 This is an easy and copy and pastable way to initialize the zig alloctaor interface for all projects:
+
 ```zig
+const native_os = builtin.target.os.tag;
+
+
     const gpa, const is_debug = gpa: {
         if (native_os == .wasi) break :gpa .{ std.heap.wasm_allocator, false };
         break :gpa switch (builtin.mode) {
@@ -21,4 +26,5 @@ This is an easy and copy and pastable way to initialize the zig alloctaor interf
 ## Useful Links
 
 ## Tags
+
 [[zig-how-to]]
