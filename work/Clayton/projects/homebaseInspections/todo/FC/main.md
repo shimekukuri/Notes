@@ -18,18 +18,19 @@
 ✅ Something in the media tab is making a network call when it shouldn't be. It's implicit to even offline functionality
 ✅ The useMedia hook hastily fetches in the background, maybe it shouldn't do that. Seems like a bit of a side
 ✅ Clean up useInspectionList (not using this needs to be deleted tho)
-* Delete useInspectionLIst
+✅ Delete useInspectionLIst
+✅ Remove the handleSubmit from the submit buttons, already using the hook should probably just grab it out of there,
+that or form should have to be passed in as a whole or the primatives that are required from form from the submit
+buttons.
 * Come back to do Camera it needs to be it's own story and I either need a test device or something
 * In the Homeinspection Haader the camera button, really we just needt redo the header for the old app as well
-* Remove the handleSubmit from the submit buttons, already using the hook should probably just grab it out of there,
-  that or form should have to be passed in as a whole or the primatives that are required from form from the submit
-  buttons.
 * Remove array methods for handlers.
     * handleRemoveModalConfirm in features/homseinspections/components/attemptstab.tsx
     * onSubmit in newInspectionsModal looks awful
 * Fix Create Patch again (ugh)
 * When a request is removed we need to update what all is removed IE we also need to get rid of meta data
 * Might need to move sorting for HIfieldUse and LIst into it's own area they are kind of co-dependent
+* Remove the single attempt upload from the header or have an option to disable it.
 
 ### Upload Stuff
 ✅ When upload fails inspection needs to be red.
