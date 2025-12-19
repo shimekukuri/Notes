@@ -1,6 +1,7 @@
 # Zig Concepts Interfaces - Switch Inline Else Tagged Union
 
 ## Abstract
+
 ```zig
 //
 // Remember our ant and bee simulator constructed with unions
