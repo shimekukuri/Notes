@@ -2,8 +2,7 @@
 
 ## Abstract
 Not done:
-
-Fix lsp stuff for nvim;
+- Fix lsp stuff for nvim;
 
 Done:
 
