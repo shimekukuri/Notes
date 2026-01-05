@@ -71,6 +71,12 @@ You can than let minikube open it for you in a web browser with:
 minikube service hello-minikube
 ```
 
+You can also have kubectl forward the port:
+```bash
+kubectl get services hello-minikube
+```
+
+
 ## Directory
 [[minikube-documentation]]
 
