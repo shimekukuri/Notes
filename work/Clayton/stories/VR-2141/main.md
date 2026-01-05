@@ -76,6 +76,124 @@ You can also have kubectl forward the port:
 kubectl get services hello-minikube
 ```
 
+### Load Balancer
+```bash
+kubectl create deployment balanced --image=kicbase/echo-service1:0
+kubectl expose deployment balanced --type=LoadBalancer --port=8080
+```
+
+in another window run
+```bash
+minikube tunnel
+```
+
+To find the routable Ip run
+```bash
+kubectl get services
+```
+and under the loadbalancer you will see it now has an external IP
+
+### Ingress
+first enable the ingress addon
+```bash
+minikube addons enable ingress
+```
+NOTE: There maybe a firewall related issue here that may need to be resolved.
+
+create a file with the following:
+```yaml
+kind: Pod
+apiVersion: v1
+metadata:
+  name: foo-app
+  labels:
+    app: foo
+spec:
+  containers:
+    - name: foo-app
+      image: 'kicbase/echo-server:1.0'
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: foo-service
+spec:
+  selector:
+    app: foo
+  ports:
+    - port: 8080
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: bar-app
+  labels:
+    app: bar
+spec:
+  containers:
+    - name: bar-app
+      image: 'kicbase/echo-server:1.0'
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: bar-service
+spec:
+  selector:
+    app: bar
+  ports:
+    - port: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: example-ingress
+spec:
+  rules:
+    - http:
+        paths:
+          - pathType: Prefix
+            path: /foo
+            backend:
+              service:
+                name: foo-service
+                port:
+                  number: 8080
+          - pathType: Prefix
+            path: /bar
+            backend:
+              service:
+                name: bar-service
+                port:
+                  number: 8080
+---
+```
+See File 'ingressExample.yaml'
+
+Than apply
+```bash
+kubectl apply -f ingressExample.yaml
+```
+
+In another terminal
+```bash
+sudo minikube tunnel
+```
+
+```bash
+kubectl get ingress
+```
+Note for Docker Desktop Users:
+To get ingress to work you’ll need to open a new terminal window and run minikube tunnel and in the following step use
+127.0.0.1 in place of <ip_from_above>.
+
+than to test:
+
+```bash
+curl http://127.0.0.1/foo
+curl http://127.0.0.1/bar
+```
+
 
 ## Directory
 [[minikube-documentation]]
