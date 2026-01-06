@@ -189,10 +189,33 @@ To get ingress to work you’ll need to open a new terminal window and run minik
 
 than to test:
 
+It make take sometime for everything to actually deploy and work
+
 ```bash
 curl http://127.0.0.1/foo
 curl http://127.0.0.1/bar
 ```
+## Thoughts
+
+### Goal
+We want an easy to user interface in which we can fully test as much as can locally where by building out a specific
+dotnet package propigates changes to all dependencies in the cluster and redeploys them as well. We want to treat the
+cluster as immutable as possible maybe utilizing nix where appropriate.
+
+[[clayton-stories-vr-2141-nix-docker-example]]
+
+This idea is going to mostly be that we are going to use nix to compose the docker file build step then we are going to
+use a zig program to orchestrate each build where in the zig build system we are going to dispatch build commands that
+will run the nix build commands that will actually produce the images that will then get loaded into docker and used
+by k8s and minikube.
+
+Nix with flakes:
+Builds the images declaritively along with also allowing us to pin the inputs meaning we can actually quickly move back
+and forth between verseions quickly as we can cache them. Also we can ensure that when we go to production that everything
+matches.
+
+k8s minikube:
+For actually maintaining
 
 
 ## Directory
