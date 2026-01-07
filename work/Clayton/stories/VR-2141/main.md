@@ -217,6 +217,12 @@ matches.
 k8s minikube:
 For actually maintaining
 
+### Mental walk through
+Create a nix fkae that allows us to build a given dotnet docker image. Each flake produces a number of outputs that can
+than be used by other flakes, for example each dotnet repo flake that produces an image will have that image available
+but also will provide as part of it's outputs any client and dto objects that need to be made available to other packages
+
+
 
 ## Directory
 [[minikube-documentation]]
