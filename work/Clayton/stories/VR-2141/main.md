@@ -222,6 +222,10 @@ Create a nix fkae that allows us to build a given dotnet docker image. Each flak
 than be used by other flakes, for example each dotnet repo flake that produces an image will have that image available
 but also will provide as part of it's outputs any client and dto objects that need to be made available to other packages
 
+### Walk through 2
+Nix will build the applicatoin and libraries using a flake that can reference specific brnahces or commits in repositories
+that hold dependencies. They are going to be built intside of a runner that is a docker container that has the nixos
+image as the base image. At the end what would be producesd is all of the things defined in the flake.
 
 
 ## Directory
