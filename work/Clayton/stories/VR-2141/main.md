@@ -227,6 +227,15 @@ Nix will build the applicatoin and libraries using a flake that can reference sp
 that hold dependencies. They are going to be built intside of a runner that is a docker container that has the nixos
 image as the base image. At the end what would be producesd is all of the things defined in the flake.
 
+### I have finally gotten a docker image to build with nix
+[[nix-package-manager-how-to-setup-remote-builder-for-mac]]
+Now that I have been able to create a docker image in nix and am able to run it I need to back up and get my git creds
+into the build env in a good and easy way. Than I need to test actually building the dotnet apps in there. I wonder
+if it is at all possible to just try and build them right now? I guess lets try
+
+### Working on the initial version of flaking a docker build script underway
+Will need to get the digest of input images and nix hash see
+
 
 ## Directory
 [[minikube-documentation]]
@@ -238,3 +247,5 @@ image as the base image. At the end what would be producesd is all of the things
 [[docker]]
 [[kubernetes]]
 [[kubernetes-service]]
+[[nexus-nix]]
+[[skopeo]]
