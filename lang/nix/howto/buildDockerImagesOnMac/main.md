@@ -1,11 +1,32 @@
 # Nix Lang How To - Build Docker Images On Mac
 
 ## Abstract
+### 01_13_2026
+
+This is the winner winner chicken dinner
+docker run --rm \
+  -v $(pwd):/app \
+  -w /app nixos/nix \
+  sh -c 'nix build .#packages.aarch64-linux.default --extra-experimental-features "nix-command flakes" && cp $(readlink result) /app/mmm.tar.gz'
+
+
+
+### 01_12_2026
+Now that I can atleast build things using the remote nix builder, which is a good step for me locally I need to now
+go out and make it so that I can build things with the nix container image.
+
+- Considerations is multi aarch given that we need both arm64 and amd64
+
 ### What I have done so far:
 nix run nixpkgs#darwin.linux-builder
 
 Need this as well:
 https://nixos.org/manual/nixpkgs/stable/#sec-darwin-builder
+This seems to work as intended
+
+Will keep some of this other stiff in here for right now, but I walso want to look at just building this stuff in a
+docker container
+
 
 ------------------------------------------------------------------------------------------------------------------------
 How to fix all of the ssh stuff:

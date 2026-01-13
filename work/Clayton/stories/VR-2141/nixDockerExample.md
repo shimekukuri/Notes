@@ -1,5 +1,18 @@
 # Clayton Stories VR-2141 - Nix Docker Example
 
+```c
+         88                                                                                               88
+         88                                                                      ,d                       88
+         88                                                                      88                       88
+ ,adPPYb,88  ,adPPYba, 8b,dPPYba,  8b,dPPYba,  ,adPPYba,  ,adPPYba, ,adPPYYba, MM88MMM ,adPPYba,  ,adPPYb,88
+a8"    `Y88 a8P_____88 88P'    "8a 88P'   "Y8 a8P_____88 a8"     "" ""     `Y8   88   a8P_____88 a8"    `Y88
+8b       88 8PP""""""" 88       d8 88         8PP""""""" 8b         ,adPPPPP88   88   8PP""""""" 8b       88
+"8a,   ,d88 "8b,   ,aa 88b,   ,a8" 88         "8b,   ,aa "8a,   ,aa 88,    ,88   88,  "8b,   ,aa "8a,   ,d88
+ `"8bbdP"Y8  `"Ybbd8"' 88`YbbdP"'  88          `"Ybbd8"'  `"Ybbd8"' `"8bbdP"Y8   "Y888 `"Ybbd8"'  `"8bbdP"Y8
+                       88
+                       88
+```
+
 ## Abstract
 Here’s the **complete workflow** for building a deterministic image with Nix, loading it into Docker, and cleaning up containers/images afterward:
 
