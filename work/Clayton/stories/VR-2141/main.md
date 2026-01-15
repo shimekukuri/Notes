@@ -8,6 +8,199 @@ What I want:
 
 ## General daily update log
 
+### 01_15_2025
+Here is possibly the script I'm looking at doing:
+Generate a deps.json file: Nix requires a lock file for dependencies to ensure reproducibility. You can generate this
+using the nuget-to-nix tool or a similar script provided within the nixpkgs dotnet infrastructure.
+Place your nuget.config file in the root directory of your project (or in a specified location).
+Run dotnet restore with the configuration file specified, if needed: dotnet restore --configfile nuget.config.
+Use nuget-to-nix or the fetch-deps script from buildDotnetModule's passthru to generate the dependency file (e.g.,
+deps.json or deps.nix):
+
+bash
+
+nix-shell -p nuget-to-nix --run "nuget-to-nix packages > deps.nix"
+# or use the fetch-deps script from your flake
+This file will contain the URLs and hashes for all the required NuGet packages, including those from your custom
+source in nuget.config.
+
+Got it — you’re on **macOS**, and you want a **self‑contained NixOS container** that:
+
+1.  **Imports your developer credentials**, specifically:
+    *   NuGet config (e.g., `~/.nuget/NuGet/NuGet.Config`)
+    *   Git credentials (token or SSH keys)
+    *   SSL certificates (system + internal/corporate CAs)
+
+2.  **Uses those credentials *inside the container*** so it can:
+    *   restore private NuGet feeds
+    *   clone private Git repositories
+    *   fetch flakes over TLS using your internal CAs
+
+3.  **Builds Nix flakes inside the container**
+
+4.  **Exports build artifacts back to the macOS filesystem**
+
+You want a clean “build sandbox” on macOS that acts like a credential‑aware CI runner.
+
+Below is the **recommended architecture** and a **fully working setup**.
+
+***
+
+# ✅ Recommended Approach (macOS ➜ Linux container ➜ flake build)
+
+On macOS, the simplest, fully working approach is:
+
+1.  **Use a NixOS system container via Docker**
+    (macOS cannot run NixOS containers natively — only Linux can)
+
+2.  **Mount host credential files into the container**
+    So you never bake secrets into the image.
+
+3.  **Mount an output directory to get all build artifacts back**
+
+4.  **Use `nix build` inside the container**
+    With full access to your:
+    *   NuGet feeds
+    *   Git credentials
+    *   SSL certificates
+
+***
+
+# 🐳 **1. Dockerfile: NixOS + CA Certs + tooling**
+
+A minimal NixOS container with:
+
+*   `cacert`
+*   git + nix
+*   dotnet-sdk (if you need NuGet restore before flake builds)
+*   ability to read your mounted credentials
+
+```Dockerfile
+FROM nixos/nix:latest
+
+# Install NixOS system packages
+RUN nix-env -iA nixpkgs.git \
+             nixpkgs.cacert \
+             nixpkgs.curl \
+             nixpkgs.dotnet-sdk-8_0
+
+# Configure system-wide cert locations
+ENV SSL_CERT_FILE=/etc/ssl/certs/ca-bundle.crt
+ENV SSL_CERT_DIR=/etc/ssl/certs
+```
+
+Build the image:
+
+```sh
+docker build -t nix-flake-builder .
+```
+
+***
+
+# 🧩 **2. Run container with mounted credentials & output**
+
+### Mac filesystem → Container (read‑only):
+
+| Host File                     | Mount To                           | Purpose               |
+| ----------------------------- | ---------------------------------- | --------------------- |
+| `~/.nuget/NuGet/NuGet.Config` | `/root/.config/NuGet/NuGet.Config` | Private NuGet feeds   |
+| `~/.gitconfig`                | `/root/.gitconfig`                 | Git identity settings |
+| `~/.ssh/id_rsa`               | `/root/.ssh/id_rsa`                | SSH auth              |
+| `~/my-certs.pem`              | `/etc/ssl/certs/my-certs.pem`      | Corporate CAs         |
+| `/path/to/project`            | `/workspace`                       | Flake source          |
+| `/path/to/output`             | `/out`                             | Build artifacts       |
+
+Run:
+
+```sh
+docker run --rm -it \
+  -v $HOME/.nuget/NuGet/NuGet.Config:/root/.config/NuGet/NuGet.Config:ro \
+  -v $HOME/.gitconfig:/root/.gitconfig:ro \
+  -v $HOME/.ssh:/root/.ssh:ro \
+  -v /path/to/my-certs.pem:/etc/ssl/certs/my-certs.pem:ro \
+  -v /path/to/flake:/workspace \
+  -v /path/to/output:/out \
+  nix-flake-builder bash
+```
+
+***
+
+# 🔐 **3. Fix SSL inside container**
+
+Inside the container:
+
+```sh
+cat /etc/ssl/certs/my-certs.pem >> /etc/ssl/certs/ca-bundle.crt
+```
+
+(Optional, or automate with Dockerfile if CA is not secret.)
+
+Test:
+
+```sh
+curl https://your-internal-feed/
+```
+
+***
+
+# ❄️ **4. Build flake inside container**
+
+Inside the container:
+
+```sh
+cd /workspace
+nix build .#yourPackage --out-link /out/result
+```
+
+Everything produced by the flake is now available on macOS under:
+
+    /path/to/output/result
+
+***
+
+# 💡 Optional: create a `build.sh` on macOS
+
+```sh
+#!/bin/bash
+
+docker run --rm \
+  -v $HOME/.nuget/NuGet/NuGet.Config:/root/.config/NuGet/NuGet.Config:ro \
+  -v $HOME/.gitconfig:/root/.gitconfig:ro \
+  -v $HOME/.ssh:/root/.ssh:ro \
+  -v /path/to/my-certs.pem:/etc/ssl/certs/my-certs.pem:ro \
+  -v "$(pwd)":/workspace \
+  -v "$(pwd)/build-out":/out \
+  nix-flake-builder \
+  nix build /workspace#defaultPackage --out-link /out/result
+```
+
+Now your secure, credential-aware flake builder is simply:
+
+```sh
+./build.sh
+```
+
+***
+
+# 🎁 **If you want, I can also provide:**
+
+✅ A version with **GitHub PAT** instead of SSH
+✅ A version using **dotenv‑style secrets**
+✅ A fully declarative NixOS flake to build the container image
+✅ A system that automatically updates CA certs inside the container
+✅ A version using **Colima** instead of Docker
+
+Just tell me what you'd like added!
+
+
+### 01_14_2026
+Found how out how you actually build specific packages for distrution extrinsic to proget and nuget
+dotnet pack
+
+If you need access to Teamcity to look around at the build configs. Open a ticket at SCMSHD@claytonhomes.com and I'll
+get your access added.
+
+
 ### 01_12_2026
 #### Update for Jira
 Goal: Development of a unified developer expeirience that is: operating system agnostic, deterministic, fully reproducable,
