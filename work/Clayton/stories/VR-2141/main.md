@@ -8,7 +8,11 @@ What I want:
 
 ## General daily update log
 
-### 01_15_2025
+### 01_16_2026
+Switching gears here, going to try to have a docker contianer that has all of the env in it that then produces the
+final image.
+
+### 01_15_2026
 Here is possibly the script I'm looking at doing:
 Generate a deps.json file: Nix requires a lock file for dependencies to ensure reproducibility. You can generate this
 using the nuget-to-nix tool or a similar script provided within the nixpkgs dotnet infrastructure.
