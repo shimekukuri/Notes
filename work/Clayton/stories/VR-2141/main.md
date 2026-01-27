@@ -7,6 +7,59 @@ What I want:
 * Should allow all other microservices to essentially do the same
 
 ## General daily update log
+### 01_26_2026
+#### Update for Jira
+Goal: Development of a unified developer expeirience that is: operating system agnostic, deterministic, fully reproducable,
+able to produce build artifacts for production. The final product will be a graphical interface that allows developers
+to build as much as possible locally and select branches and commits for each project that is deployed locally. This
+will allow developers to be able to run, build, and test their changes indepdenently or in parrallel with other changes.
+A developer will also be able to share their current env with any other developer meaning.
+
+Example: A developer provides a manifest that will build the same conditions that they have on anothers computer.
+
+High level overview:
+Flyway - For migrating local database instances
+Minikube - Local K8s cluster to run and manage containers
+Helm - For multi env service blue prints (charts) that can be used to deploy to different envs
+Nix - For deterministic and reproducable container building that can pin to spcific branches, commits.
+Zig - Runtime free systems logic for glue coding and process management and serve as backend to front end.
+React - To build front end UI
+DeterminateNix Gh actions
+
+Process Walkthrough:
+Nix Image Container builds spcific Nix flake into a fully verion pinned and reproducable docker image of a given repo.
+-> Repeat for all Given repositories.
+-> when all Repositories produce Cryptographically verified containers move to orchestration phase
+-> Helm chart references build artifacts produced in the previous phase and allow env specific configuration
+-> Helm Chart deploys requisit artifacts into their respective services in minikube pod.
+-> All Process tracking handled by running zig process that acts as a glue between services and backend web server.
+-> All Selection and status of the pod is propigated to the user via GUI interface written in web technologies.
+
+Opinions and Reasons:
+Containers while often sold as the golden hammer to every problem reveal a new level of problem that has traditionally
+been handled by another team in the form of dev ops. As it solves the underlying problem it poses the problem that exists
+just above it. Additionally containers while themselves are immutable the process in which that they are built through
+technologies such as docker are not deterministic and are not reproducable, not in the literal sense of those terms.
+Docker ultimately lacks the facilities to create a lock file that serves as a cryptogrphic signature the the accuracy
+of inputs and outputs. More simply, the contianers can be guarenteed to work, but building them is not and differences
+in build environments can produce Cryptographically different build artifacts. In order for a developer to truly leverage
+the ability to develop ontop of containers building a container is the often overlooked component, and often results in
+a registry of containers where this is no guarentee that they can be build in any env other than the one that they were
+built in. It also creates a situation in which we have two sources of truth that may not actually reflect accurately
+what is "the truth" our repository may list some branch or commit, but the other registry through a failure in CI/CD
+environmental differences, or break in manual process, may list a container that doesn't reflect the current state of
+that repository. With the blend of these technologies (namely Nix) we can construct fully reproducable and version pinned
+containers, and the 'recipe' for doing such is always within the repository and through github action can verify on
+every push and pull that everything is as it should be.
+
+Packages that are not in github packages that need to be:
+
+Need to get a hole of scms about these packages getting dual published.
+
+Cmh.Vmf.Rmktg.Account.Api.Client 2.0.1.347
+Cmh.Vmf.Rmktg.Account.Dto 2.0.1.347
+Cmh.Vmf.Rmktg.Asset.Api.Client 2.0.1.1300
+Cmh.Vmf.Rmktg.Asset.Dto 2.0.1.1300
 
 ### 01_16_2026
 Switching gears here, going to try to have a docker contianer that has all of the env in it that then produces the
