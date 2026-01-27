@@ -1,5 +1,6 @@
 # Linux Wayland - The Book
 
+
 ## Abstract
 The book for learning about Wayland in the begining.
 
