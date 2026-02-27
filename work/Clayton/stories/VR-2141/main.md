@@ -22,7 +22,7 @@ Flyway - For migrating local database instances
 Minikube - Local K8s cluster to run and manage containers
 Helm - For multi env service blue prints (charts) that can be used to deploy to different envs
 Nix - For deterministic and reproducable container building that can pin to spcific branches, commits.
-Zig - Runtime free systems logic for glue coding and process management and serve as backend to front end.
+Zig - Runtime free systems logic for kjkjglue coding and process management and serve as backend to front end.
 React - To build front end UI
 DeterminateNix Gh actions
 

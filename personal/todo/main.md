@@ -2,16 +2,13 @@
 
 ## Abstract
 Not done:
-- Fix lsp stuff for nvim;
-- Go back and update zls when they finally figure everything out
-- Get with Casey about transfering some money
-- MEssage about my desk.
-- Ask Lucas and jake about recomendations
-- follow up with Tc about recomendations
-- Follow up with Justin about recomendations
+- Get Stories all Documented. ✅
+- Get all current stories as far as they can go given that they are not blockedin some way. ✅
+- Time sheet ✅
+- C# like an hours worth of learning
+- Bash learning Like an hours worth
+- See about starting that nix stuff with anytime that is left over today.
 
-Done:
-- Fix lsp stuff for nvim ;
 
 ## Directory
 

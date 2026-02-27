@@ -5,6 +5,7 @@ https://nixos.org/manual/nixpkgs/stable/#sec-darwin-builder
 Follow this everything else is pretty much wrong as far as mac is concerned
 
 how to use it after it is setup correcty:
+nix run nixpkgs#darwin.linux-builder
 nix build .#packages.aarch64-linux.echo-docker --print-build-logs
 
 ## Directory
