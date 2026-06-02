@@ -3,7 +3,26 @@
 ## Abstract
 Entry point for my nix k8s teraform deployment toolkit
 
-### phases
+### Todo
+- I need to find out how I can automate getting my containers up into Codeberg
+    - SopNix?????
+
+### phases 
+I think that this should actully be more so modeled after The life cycle hooks found in nix 
+
+prePhases (An array of hooks run before the entire sequence starts)
+preUnpack -> unpackPhase -> postUnpack (Extracts source files)
+prePatch -> patchPhase -> postPatch (Applies source code patches)
+preConfigure -> configurePhase -> postConfigure (Runs scripts like ./configure)
+preBuild -> buildPhase -> postBuild (Compiles the code, usually via make)
+preCheck -> checkPhase -> postCheck (Runs unit tests if doCheck = true;)
+preInstall -> installPhase -> postInstall (Copies binaries to the $out directory)
+preFixup -> fixupPhase -> postFixup (Strips binaries, patches RPATHs, shrinks files)
+preInstallCheck -> installCheckPhase -> postInstallCheck (Runs post-install tests if doInstallCheck = true;)
+postPhases (An array of hooks run after all phases are complete)
+
+
+### phases(LLM)
 [ Phase 1: Build Local ]   -> Fails fast if any compiler error occurs
         │
 [ Phase 2: Pre-Infra ]     -> DB backups, migration preparation, DNS prep
