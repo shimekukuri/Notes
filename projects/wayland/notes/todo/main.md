@@ -6,6 +6,13 @@
 - Setup fuzzing
 
 ## Worked on
+June 4th: 
+First of all Ireally need to clean up everything and come up with some better orginizational patterns for SOA, but more tot he current progress. 
+The current issue is that VectorT in Itterator is expecting the u16 but it is getting the enum type, so we need to ensure that we aren't typing 
+things actually inside the SOA as []EnumName it really needs to be typed as purely the backing intiger, but I suspect that the type is persisting 
+from the begining of the comptime function and propigating forward.
+
+-------
 May 30: 
 In order for me to insert into Global into the registries data ( Soa Of Global ) I need to ammend SOA so that it can take an enum value
 
