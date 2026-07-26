@@ -3,9 +3,15 @@
 ## Abstract
 Entry point for my nix k8s teraform deployment toolkit
 
+
 ### Todo
 - I need to find out how I can automate getting my containers up into Codeberg
     - SopNix?????
+
+### NEW PLAN 
+Create a DAG! No particular lifetime of anything involved no hooks just a graph that is traversed in a give order based
+upon depends on relationships.This may also help it more generic to interact with things just beyond k8s and more 
+generally applicable 
 
 ### phases 
 I think that this should actully be more so modeled after The life cycle hooks found in nix 
